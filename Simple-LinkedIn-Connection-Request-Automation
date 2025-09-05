@@ -1,0 +1,36 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
+import random
+
+# Set up Selenium WebDriver
+driver = webdriver.Chrome(executable_path='path_to_chromedriver')
+
+# Login to LinkedIn
+driver.get("https://www.linkedin.com/login")
+time.sleep(2)
+username = driver.find_element_by_id('username')
+password = driver.find_element_by_id('password')
+username.send_keys('your_email@example.com')
+password.send_keys('your_password')
+password.send_keys(Keys.RETURN)
+time.sleep(2)
+
+# Function to send connection request with a personalized message
+def send_connection_request(profile_url, first_name):
+    driver.get(profile_url)
+    time.sleep(2)
+
+    connect_button = driver.find_element_by_xpath("//button[contains(text(), 'Connect')]")
+    connect_button.click()
+
+    message_box = driver.find_element_by_xpath("//textarea[@name='message']")
+    message = f"Hi {first_name}, I'd love to connect with you and share ideas on mutual topics of interest."
+    message_box.send_keys(message)
+    message_box.send_keys(Keys.RETURN)
+
+    time.sleep(random.randint(2, 5))  # Random delay to mimic human behavior
+
+# Example of sending a connection request
+send_connection_request("https://www.linkedin.com/in/exampleprofile", "John")
+driver.quit()
